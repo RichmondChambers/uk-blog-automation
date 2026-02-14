@@ -1,1 +1,1 @@
-# swiss-blog-automation
+# uk-blog-automation
