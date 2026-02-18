@@ -170,13 +170,31 @@ BLOG CONTENT:
 
 
 def post_json(url: str, payload: dict, headers: dict):
+    """
+    POST JSON and return (status_code, parsed_response).
+
+    Notes:
+    - OpenAI returns JSON bodies.
+    - SendGrid /v3/mail/send commonly returns HTTP 202 with an empty body.
+      In that case we return {} instead of attempting json.loads("").
+    - If a non-JSON body is returned, we return {"raw_body": "..."}.
+    """
     data = json.dumps(payload).encode("utf-8")
     req = request.Request(url, data=data, headers=headers, method="POST")
 
     try:
         with request.urlopen(req) as response:
-            body = response.read().decode("utf-8")
-            return response.status, json.loads(body)
+            raw = response.read()  # bytes
+            body = raw.decode("utf-8", errors="replace").strip()
+
+            if not body:
+                return response.status, {}
+
+            try:
+                return response.status, json.loads(body)
+            except json.JSONDecodeError:
+                return response.status, {"raw_body": body}
+
     except error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
         raise RuntimeError(f"HTTP {exc.code} from {url}: {body}") from exc
