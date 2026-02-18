@@ -296,7 +296,10 @@ _, chat_response = post_json(
     "https://api.openai.com/v1/chat/completions",
     payload=chat_payload,
     headers={
-        "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
+        "Authorization": (
+            "Bearer "
+            f"{os.environ.get('OPENAI_API_KEY', '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')}"
+        ),
         "Content-Type": "application/json",
     },
 )
