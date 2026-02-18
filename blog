@@ -1,0 +1,42 @@
+name: Blog Draft Generator
+
+on:
+  schedule:
+    - cron: "0 9 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install openai requests PyPDF2
+
+      - name: Run blog generator
+        run: python generate_and_publish.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+
+      - name: Commit updated topics.json
+        run: |
+          git config user.name "blog-bot"
+          git config user.email "bot@richmondchambers.com"
+          git add topics.json
+          git commit -m "Mark topic as used" || echo "No changes to commit"
+          git push
