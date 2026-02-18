@@ -1,8 +1,12 @@
+import importlib.util
 import json
 import os
-import requests
-from openai import OpenAI
-from PyPDF2 import PdfReader
+from urllib import error, request
+
+HAS_PYPDF2 = importlib.util.find_spec("PyPDF2") is not None
+
+if HAS_PYPDF2:
+    from PyPDF2 import PdfReader
 
 # -----------------------
 # GPT system prompt
@@ -136,11 +140,19 @@ BLOG CONTENT:
 <full article>
 """
 
-# -----------------------
-# OpenAI client
-# -----------------------
+def post_json(url, payload, headers):
+    data = json.dumps(payload).encode("utf-8")
+    req = request.Request(url, data=data, headers=headers, method="POST")
 
-client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    try:
+        with request.urlopen(req) as response:
+            body = response.read().decode("utf-8")
+            return response.status, json.loads(body)
+    except error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"HTTP {exc.code} from {url}: {body}") from exc
+    except error.URLError as exc:
+        raise RuntimeError(f"Network error calling {url}: {exc.reason}") from exc
 
 # -----------------------
 # Load authoritative PDF knowledge
@@ -148,6 +160,10 @@ client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 def load_pdf_knowledge(folder="knowledge", max_chars=12000):
     texts = []
+
+    if not HAS_PYPDF2:
+        print("Warning: PyPDF2 is not installed; continuing without PDF knowledge.")
+        return ""
 
     if not os.path.isdir(folder):
         return ""
@@ -220,16 +236,14 @@ if remaining_count == 0:
         ],
     }
 
-    response = requests.post(
+    post_json(
         "https://api.sendgrid.com/v3/mail/send",
+        payload=notification_payload,
         headers={
             "Authorization": f"Bearer {SENDGRID_API_KEY}",
             "Content-Type": "application/json",
         },
-        json=notification_payload,
     )
-
-    response.raise_for_status()
     print("Topics exhausted notification sent.")
     exit(0)
 
@@ -247,9 +261,9 @@ for index, topic in enumerate(topics):
 # Generate blog post
 # -----------------------
 
-response = client.chat.completions.create(
-    model="gpt-5.2",
-    messages=[
+chat_payload = {
+    "model": "gpt-5.2",
+    "messages": [
         {
             "role": "system",
             "content": SYSTEM_PROMPT
@@ -276,9 +290,18 @@ AUTHORITATIVE MATERIAL:
             "content": f"Topic: {topic_entry['topic']}\nAngle: {topic_entry['angle']}",
         },
     ],
+}
+
+_, chat_response = post_json(
+    "https://api.openai.com/v1/chat/completions",
+    payload=chat_payload,
+    headers={
+        "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
+        "Content-Type": "application/json",
+    },
 )
 
-content = response.choices[0].message.content.strip()
+content = chat_response["choices"][0]["message"]["content"].strip()
 
 # -----------------------
 # Robust section extractor
@@ -356,15 +379,13 @@ BLOG CONTENT:
     ],
 }
 
-response = requests.post(
+post_json(
     "https://api.sendgrid.com/v3/mail/send",
+    payload=email_payload,
     headers={
         "Authorization": f"Bearer {SENDGRID_API_KEY}",
         "Content-Type": "application/json",
     },
-    json=email_payload,
 )
-
-response.raise_for_status()
 
 print("Draft email sent successfully via SendGrid.")
