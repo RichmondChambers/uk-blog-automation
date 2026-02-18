@@ -18,11 +18,12 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-def require_env(name):
+def require_env(name: str) -> str:
     value = os.environ.get(name)
     if not value:
         raise RuntimeError(f"Missing required environment variable: {name}")
     return value
+
 
 # -----------------------
 # GPT system prompt
@@ -156,7 +157,8 @@ BLOG CONTENT:
 <full article>
 """
 
-def post_json(url, payload, headers):
+
+def post_json(url: str, payload: dict, headers: dict):
     data = json.dumps(payload).encode("utf-8")
     req = request.Request(url, data=data, headers=headers, method="POST")
 
@@ -169,6 +171,7 @@ def post_json(url, payload, headers):
         raise RuntimeError(f"HTTP {exc.code} from {url}: {body}") from exc
     except error.URLError as exc:
         raise RuntimeError(f"Network error calling {url}: {exc.reason}") from exc
+
 
 # -----------------------
 # Load authoritative PDF knowledge
@@ -204,8 +207,8 @@ def load_pdf_knowledge(folder="knowledge", max_chars=12000):
             texts.append(f"[SOURCE: {filename}]\n{combined}")
 
     full_text = "\n\n".join(texts)
-
     return full_text[:max_chars]
+
 
 PDF_KNOWLEDGE = load_pdf_knowledge()
 
@@ -237,10 +240,7 @@ if remaining_count == 0:
 
     notification_payload = {
         "personalizations": [
-            {
-                "to": [{"email": EMAIL_TO}],
-                "subject": "Blog automation: topics exhausted",
-            }
+            {"to": [{"email": EMAIL_TO}], "subject": "Blog automation: topics exhausted"}
         ],
         "from": {"email": EMAIL_FROM},
         "content": [
@@ -249,7 +249,7 @@ if remaining_count == 0:
                 "value": (
                     "All blog topics in topics.json have been used.\n\n"
                     "No draft was generated on this run.\n\n"
-                    "Please add new topics with status \"unused\" "
+                    'Please add new topics with status "unused" '
                     "and the automation will resume automatically."
                 ),
             }
@@ -271,23 +271,25 @@ if remaining_count == 0:
 # Select next unused topic
 # -----------------------
 
+topic_index = None
+topic_entry = None
 for index, topic in enumerate(topics):
     if topic.get("status") == "unused":
         topic_index = index
         topic_entry = topic
         break
 
+if topic_entry is None:
+    raise RuntimeError("No unused topic found, but remaining_count was non-zero. Check topics.json integrity.")
+
 # -----------------------
 # Generate blog post
 # -----------------------
 
 chat_payload = {
-    "model": "gpt-5.2",
+    "model": os.environ.get("OPENAI_MODEL", "gpt-5.2"),
     "messages": [
-        {
-            "role": "system",
-            "content": SYSTEM_PROMPT
-        },
+        {"role": "system", "content": SYSTEM_PROMPT},
         {
             "role": "system",
             "content": f"""
@@ -303,7 +305,7 @@ If the documents are silent on a point, you may rely on general knowledge but sh
 
 AUTHORITATIVE MATERIAL:
 {PDF_KNOWLEDGE}
-"""
+""",
         },
         {
             "role": "user",
@@ -330,11 +332,13 @@ Contact Our Immigration Barristers
 For tailored legal advice, contact Richmond Chambers Immigration Barristers by telephone on +44 (0)203 617 9173 or by completing an enquiry form to arrange an initial consultation meeting.
 """.strip()
 else:
+    OPENAI_API_KEY = require_env("OPENAI_API_KEY")
+
     _, chat_response = post_json(
         "https://api.openai.com/v1/chat/completions",
         payload=chat_payload,
         headers={
-            "Authorization": f"Bearer {require_env('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')}",
+            "Authorization": f"Bearer {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}",
             "Content-Type": "application/json",
         },
     )
@@ -386,10 +390,7 @@ EMAIL_TO = "paul.richmond@richmondchambers.com"
 
 email_payload = {
     "personalizations": [
-        {
-            "to": [{"email": EMAIL_TO}],
-            "subject": f"Blog draft: {title}",
-        }
+        {"to": [{"email": EMAIL_TO}], "subject": f"Blog draft: {title}"}
     ],
     "from": {"email": EMAIL_FROM},
     "content": [
