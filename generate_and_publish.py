@@ -1,3 +1,4 @@
+import argparse
 import importlib.util
 import json
 import os
@@ -7,6 +8,21 @@ HAS_PYPDF2 = importlib.util.find_spec("PyPDF2") is not None
 
 if HAS_PYPDF2:
     from PyPDF2 import PdfReader
+
+parser = argparse.ArgumentParser(description="Generate and email UK immigration blog drafts.")
+parser.add_argument(
+    "--dry-run",
+    action="store_true",
+    help="Run end-to-end generation flow without network calls or writing topics.json.",
+)
+args = parser.parse_args()
+
+
+def require_env(name):
+    value = os.environ.get(name)
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
 
 # -----------------------
 # GPT system prompt
@@ -211,7 +227,11 @@ remaining_count = len(unused_topics)
 # -----------------------
 
 if remaining_count == 0:
-    SENDGRID_API_KEY = os.environ["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"]
+    if args.dry_run:
+        print("Dry run complete: topics exhausted path reached; skipped SendGrid notification.")
+        exit(0)
+
+    SENDGRID_API_KEY = require_env("SENDGRID_API_KEY")
     EMAIL_FROM = "paul.richmond@richmondchambers.com"
     EMAIL_TO = "paul.richmond@richmondchambers.com"
 
@@ -240,7 +260,7 @@ if remaining_count == 0:
         "https://api.sendgrid.com/v3/mail/send",
         payload=notification_payload,
         headers={
-            "Authorization": f"Bearer {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}",
+            "Authorization": f"Bearer {SENDGRID_API_KEY}",
             "Content-Type": "application/json",
         },
     )
@@ -292,19 +312,33 @@ AUTHORITATIVE MATERIAL:
     ],
 }
 
-_, chat_response = post_json(
-    "https://api.openai.com/v1/chat/completions",
-    payload=chat_payload,
-    headers={
-        "Authorization": (
-            "Bearer "
-            f"{os.environ.get('OPENAI_API_KEY', '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')}"
-        ),
-        "Content-Type": "application/json",
-    },
-)
+if args.dry_run:
+    content = f"""BLOG TITLE:
+Dry Run: {topic_entry['topic']}
 
-content = chat_response["choices"][0]["message"]["content"].strip()
+SEO META TITLE:
+Dry run meta title
+
+SEO META DESCRIPTION:
+Dry run description for verification only.
+
+BLOG CONTENT:
+This is a dry run for topic: {topic_entry['topic']}.
+Angle: {topic_entry['angle']}
+
+Contact Our Immigration Barristers
+For tailored legal advice, contact Richmond Chambers Immigration Barristers by telephone on +44 (0)203 617 9173 or by completing an enquiry form to arrange an initial consultation meeting.
+""".strip()
+else:
+    _, chat_response = post_json(
+        "https://api.openai.com/v1/chat/completions",
+        payload=chat_payload,
+        headers={
+            "Authorization": f"Bearer {require_env('OPENAI_API_KEY')}",
+            "Content-Type": "application/json",
+        },
+    )
+    content = chat_response["choices"][0]["message"]["content"].strip()
 
 # -----------------------
 # Robust section extractor
@@ -335,17 +369,18 @@ print("SEO META DESCRIPTION:", meta_description)
 # Mark topic as used
 # -----------------------
 
-topics[topic_index]["status"] = "used"
-topics[topic_index]["used_title"] = title
+if not args.dry_run:
+    topics[topic_index]["status"] = "used"
+    topics[topic_index]["used_title"] = title
 
-with open(TOPICS_PATH, "w", encoding="utf-8") as f:
-    json.dump(topics, f, indent=2, ensure_ascii=False)
+    with open(TOPICS_PATH, "w", encoding="utf-8") as f:
+        json.dump(topics, f, indent=2, ensure_ascii=False)
 
 # -----------------------
 # Send draft email via SendGrid
 # -----------------------
 
-SENDGRID_API_KEY = os.environ["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"]
+SENDGRID_API_KEY = require_env("SENDGRID_API_KEY") if not args.dry_run else None
 EMAIL_FROM = "paul.richmond@richmondchambers.com"
 EMAIL_TO = "paul.richmond@richmondchambers.com"
 
@@ -382,13 +417,16 @@ BLOG CONTENT:
     ],
 }
 
-post_json(
-    "https://api.sendgrid.com/v3/mail/send",
-    payload=email_payload,
-    headers={
-        "Authorization": f"Bearer {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}",
-        "Content-Type": "application/json",
-    },
-)
+if args.dry_run:
+    print("Dry run complete: skipped SendGrid email and topics.json update.")
+else:
+    post_json(
+        "https://api.sendgrid.com/v3/mail/send",
+        payload=email_payload,
+        headers={
+            "Authorization": f"Bearer {SENDGRID_API_KEY}",
+            "Content-Type": "application/json",
+        },
+    )
 
-print("Draft email sent successfully via SendGrid.")
+    print("Draft email sent successfully via SendGrid.")
