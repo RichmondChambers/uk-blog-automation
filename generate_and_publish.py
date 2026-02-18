@@ -212,8 +212,8 @@ remaining_count = len(unused_topics)
 
 if remaining_count == 0:
     SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
-    EMAIL_FROM = os.environ["paul.richmond@richmondchambers.com"]
-    EMAIL_TO = os.environ["paul.richmond@richmondchambers.com"]
+    EMAIL_FROM = "paul.richmond@richmondchambers.com"
+    EMAIL_TO = "paul.richmond@richmondchambers.com"
 
     notification_payload = {
         "personalizations": [
@@ -343,8 +343,8 @@ with open(TOPICS_PATH, "w", encoding="utf-8") as f:
 # -----------------------
 
 SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
-EMAIL_FROM = os.environ["EMAIL_FROM"]
-EMAIL_TO = os.environ["EMAIL_TO"]
+EMAIL_FROM = "paul.richmond@richmondchambers.com"
+EMAIL_TO = "paul.richmond@richmondchambers.com"
 
 email_payload = {
     "personalizations": [
