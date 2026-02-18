@@ -332,17 +332,17 @@ Contact Our Immigration Barristers
 For tailored legal advice, contact Richmond Chambers Immigration Barristers by telephone on +44 (0)203 617 9173 or by completing an enquiry form to arrange an initial consultation meeting.
 """.strip()
 else:
-    OPENAI_API_KEY = require_env("OPENAI_API_KEY")
+   OPENAI_API_KEY = require_env("OPENAI_API_KEY")
 
-    _, chat_response = post_json(
-        "https://api.openai.com/v1/chat/completions",
-        payload=chat_payload,
-        headers={
-            "Authorization": f"Bearer {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}",
-            "Content-Type": "application/json",
-        },
-    )
-    content = chat_response["choices"][0]["message"]["content"].strip()
+_, chat_response = post_json(
+    "https://api.openai.com/v1/chat/completions",
+    payload=chat_payload,
+    headers={
+        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Content-Type": "application/json",
+    },
+)
+content = chat_response["choices"][0]["message"]["content"].strip()
 
 # -----------------------
 # Robust section extractor
