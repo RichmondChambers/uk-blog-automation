@@ -26,6 +26,17 @@ def require_env(name: str) -> str:
 
 
 # -----------------------
+# Email configuration (SendGrid sender identity)
+# -----------------------
+# Verified SendGrid sender identity (Single Sender) is: info@richmondchambers.com
+EMAIL_FROM = os.environ.get("SENDGRID_FROM_EMAIL", "info@richmondchambers.com")
+# Always send to Paul only
+EMAIL_TO = "paul.richmond@richmondchambers.com"
+# Optional: direct replies somewhere specific (kept as Paul by default)
+REPLY_TO = os.environ.get("SENDGRID_REPLY_TO", EMAIL_TO)
+
+
+# -----------------------
 # GPT system prompt
 # -----------------------
 
@@ -235,14 +246,13 @@ if remaining_count == 0:
         exit(0)
 
     SENDGRID_API_KEY = require_env("SENDGRID_API_KEY")
-    EMAIL_FROM = "paul.richmond@richmondchambers.com"
-    EMAIL_TO = "paul.richmond@richmondchambers.com"
 
     notification_payload = {
         "personalizations": [
             {"to": [{"email": EMAIL_TO}], "subject": "Blog automation: topics exhausted"}
         ],
         "from": {"email": EMAIL_FROM},
+        "reply_to": {"email": REPLY_TO},
         "content": [
             {
                 "type": "text/plain",
@@ -332,17 +342,16 @@ Contact Our Immigration Barristers
 For tailored legal advice, contact Richmond Chambers Immigration Barristers by telephone on +44 (0)203 617 9173 or by completing an enquiry form to arrange an initial consultation meeting.
 """.strip()
 else:
-   OPENAI_API_KEY = require_env("OPENAI_API_KEY")
-
-_, chat_response = post_json(
-    "https://api.openai.com/v1/chat/completions",
-    payload=chat_payload,
-    headers={
-        "Authorization": f"Bearer {OPENAI_API_KEY}",
-        "Content-Type": "application/json",
-    },
-)
-content = chat_response["choices"][0]["message"]["content"].strip()
+    OPENAI_API_KEY = require_env("OPENAI_API_KEY")
+    _, chat_response = post_json(
+        "https://api.openai.com/v1/chat/completions",
+        payload=chat_payload,
+        headers={
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json",
+        },
+    )
+    content = chat_response["choices"][0]["message"]["content"].strip()
 
 # -----------------------
 # Robust section extractor
@@ -370,29 +379,17 @@ print("SEO META TITLE:", meta_title)
 print("SEO META DESCRIPTION:", meta_description)
 
 # -----------------------
-# Mark topic as used
-# -----------------------
-
-if not args.dry_run:
-    topics[topic_index]["status"] = "used"
-    topics[topic_index]["used_title"] = title
-
-    with open(TOPICS_PATH, "w", encoding="utf-8") as f:
-        json.dump(topics, f, indent=2, ensure_ascii=False)
-
-# -----------------------
 # Send draft email via SendGrid
 # -----------------------
 
 SENDGRID_API_KEY = require_env("SENDGRID_API_KEY") if not args.dry_run else None
-EMAIL_FROM = "paul.richmond@richmondchambers.com"
-EMAIL_TO = "paul.richmond@richmondchambers.com"
 
 email_payload = {
     "personalizations": [
         {"to": [{"email": EMAIL_TO}], "subject": f"Blog draft: {title}"}
     ],
     "from": {"email": EMAIL_FROM},
+    "reply_to": {"email": REPLY_TO},
     "content": [
         {
             "type": "text/plain",
@@ -429,5 +426,14 @@ else:
             "Content-Type": "application/json",
         },
     )
+
+    # -----------------------
+    # Mark topic as used (only after successful email send)
+    # -----------------------
+    topics[topic_index]["status"] = "used"
+    topics[topic_index]["used_title"] = title
+
+    with open(TOPICS_PATH, "w", encoding="utf-8") as f:
+        json.dump(topics, f, indent=2, ensure_ascii=False)
 
     print("Draft email sent successfully via SendGrid.")
