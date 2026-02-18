@@ -211,7 +211,7 @@ remaining_count = len(unused_topics)
 # -----------------------
 
 if remaining_count == 0:
-    SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+    SENDGRID_API_KEY = os.environ["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"]
     EMAIL_FROM = "paul.richmond@richmondchambers.com"
     EMAIL_TO = "paul.richmond@richmondchambers.com"
 
@@ -240,7 +240,7 @@ if remaining_count == 0:
         "https://api.sendgrid.com/v3/mail/send",
         payload=notification_payload,
         headers={
-            "Authorization": f"Bearer {SENDGRID_API_KEY}",
+            "Authorization": f"Bearer {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}",
             "Content-Type": "application/json",
         },
     )
@@ -345,7 +345,7 @@ with open(TOPICS_PATH, "w", encoding="utf-8") as f:
 # Send draft email via SendGrid
 # -----------------------
 
-SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+SENDGRID_API_KEY = os.environ["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"]
 EMAIL_FROM = "paul.richmond@richmondchambers.com"
 EMAIL_TO = "paul.richmond@richmondchambers.com"
 
@@ -386,7 +386,7 @@ post_json(
     "https://api.sendgrid.com/v3/mail/send",
     payload=email_payload,
     headers={
-        "Authorization": f"Bearer {SENDGRID_API_KEY}",
+        "Authorization": f"Bearer {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}",
         "Content-Type": "application/json",
     },
 )
