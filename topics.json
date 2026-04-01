@@ -80,7 +80,8 @@
   {
     "topic": "Certificates of Sponsorship: What They Are, What Can Go Wrong, and How to Fix Issues Early",
     "angle": "Applicant-friendly explanation of CoS basics, typical errors (dates, job details, salary), and what to ask your sponsor to correct.",
-    "status": "unused"
+    "status": "used",
+    "used_title": "Certificates of Sponsorship (CoS): What They Are, What Can Go Wrong, and How to Fix Issues Early"
   },
   {
     "topic": "Right to Work Checks: A Practical Guide for UK Employers (and What Employees Should Expect)",
