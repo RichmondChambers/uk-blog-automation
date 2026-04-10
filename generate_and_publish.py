@@ -202,39 +202,6 @@ def post_json(url: str, payload: dict, headers: dict):
         raise RuntimeError(f"Network error calling {url}: {exc.reason}") from exc
 
 
-def try_sendgrid_email(payload: dict, api_key: str, context: str) -> bool:
-    """
-    Attempt to send an email through SendGrid.
-
-    Returns True on success. Returns False (without raising) when SendGrid
-    rejects with a known operational/billing condition so CI runs can complete.
-    """
-    try:
-        post_json(
-            "https://api.sendgrid.com/v3/mail/send",
-            payload=payload,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-        )
-        return True
-    except RuntimeError as exc:
-        message = str(exc)
-        known_nonfatal = [
-            "https://api.sendgrid.com/v3/mail/send",
-            "HTTP 401",
-            "Maximum credits exceeded",
-        ]
-        if all(token in message for token in known_nonfatal):
-            print(
-                f"Warning: SendGrid email skipped for '{context}' due to account credits limit. "
-                "Generation completed without email delivery."
-            )
-            return False
-        raise
-
-
 def extract_chat_completion_text(response: dict) -> str:
     try:
         return response["choices"][0]["message"]["content"].strip()
