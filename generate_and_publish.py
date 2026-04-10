@@ -202,6 +202,102 @@ def post_json(url: str, payload: dict, headers: dict):
         raise RuntimeError(f"Network error calling {url}: {exc.reason}") from exc
 
 
+def try_sendgrid_email(payload: dict, api_key: str, context: str) -> bool:
+    """
+    Attempt to send an email through SendGrid.
+
+    Returns True on success. Returns False (without raising) when SendGrid
+    rejects with a known operational/billing condition so CI runs can complete.
+    """
+    try:
+        post_json(
+            "https://api.sendgrid.com/v3/mail/send",
+            payload=payload,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+        )
+        return True
+    except RuntimeError as exc:
+        message = str(exc)
+        known_nonfatal = [
+            "https://api.sendgrid.com/v3/mail/send",
+            "HTTP 401",
+            "Maximum credits exceeded",
+        ]
+        if all(token in message for token in known_nonfatal):
+            print(
+                f"Warning: SendGrid email skipped for '{context}' due to account credits limit. "
+                "Generation completed without email delivery."
+            )
+            return False
+        raise
+
+
+def extract_chat_completion_text(response: dict) -> str:
+    try:
+        return response["choices"][0]["message"]["content"].strip()
+    except (KeyError, IndexError, AttributeError) as exc:
+        raise RuntimeError(f"Unexpected chat completions response shape: {response}") from exc
+
+
+def extract_responses_text(response: dict) -> str:
+    # Responses API may place text in output_text, or in output[].content[].text.
+    output_text = response.get("output_text")
+    if isinstance(output_text, str) and output_text.strip():
+        return output_text.strip()
+
+    output_blocks = response.get("output", [])
+    collected = []
+    for block in output_blocks:
+        for part in block.get("content", []):
+            text = part.get("text")
+            if isinstance(text, str) and text.strip():
+                collected.append(text.strip())
+
+    if collected:
+        return "\n".join(collected).strip()
+
+    raise RuntimeError(f"Unexpected responses API response shape: {response}")
+
+
+def generate_blog_content(openai_api_key: str, payload: dict) -> str:
+    headers = {
+        "Authorization": f"Bearer {openai_api_key}",
+        "Content-Type": "application/json",
+    }
+
+    chat_error = None
+    try:
+        _, chat_response = post_json(
+            "https://api.openai.com/v1/chat/completions",
+            payload=payload,
+            headers=headers,
+        )
+        return extract_chat_completion_text(chat_response)
+    except RuntimeError as exc:
+        chat_error = exc
+        print(f"Warning: chat completions request failed, trying responses API fallback. Details: {exc}")
+
+    responses_payload = {
+        "model": payload["model"],
+        "input": payload["messages"],
+    }
+    try:
+        _, responses_response = post_json(
+            "https://api.openai.com/v1/responses",
+            payload=responses_payload,
+            headers=headers,
+        )
+        return extract_responses_text(responses_response)
+    except RuntimeError as responses_exc:
+        raise RuntimeError(
+            "OpenAI generation failed via both chat completions and responses API. "
+            f"chat_completions_error={chat_error}; responses_error={responses_exc}"
+        ) from responses_exc
+
+
 # -----------------------
 # Load authoritative PDF knowledge
 # -----------------------
@@ -284,15 +380,11 @@ if remaining_count == 0:
         ],
     }
 
-    post_json(
-        "https://api.sendgrid.com/v3/mail/send",
-        payload=notification_payload,
-        headers={
-            "Authorization": f"Bearer {SENDGRID_API_KEY}",
-            "Content-Type": "application/json",
-        },
-    )
-    print("Topics exhausted notification sent.")
+    sent = try_sendgrid_email(notification_payload, SENDGRID_API_KEY, "topics exhausted notification")
+    if sent:
+        print("Topics exhausted notification sent.")
+    else:
+        print("Topics exhausted notification not sent (non-fatal).")
     exit(0)
 
 # -----------------------
@@ -361,15 +453,7 @@ For tailored legal advice, contact Richmond Chambers Immigration Barristers by t
 """.strip()
 else:
     OPENAI_API_KEY = require_env("OPENAI_API_KEY")
-    _, chat_response = post_json(
-        "https://api.openai.com/v1/chat/completions",
-        payload=chat_payload,
-        headers={
-            "Authorization": f"Bearer {OPENAI_API_KEY}",
-            "Content-Type": "application/json",
-        },
-    )
-    content = chat_response["choices"][0]["message"]["content"].strip()
+    content = generate_blog_content(OPENAI_API_KEY, chat_payload)
 
 # -----------------------
 # Robust section extractor
@@ -436,22 +520,18 @@ BLOG CONTENT:
 if args.dry_run:
     print("Dry run complete: skipped SendGrid email and topics.json update.")
 else:
-    post_json(
-        "https://api.sendgrid.com/v3/mail/send",
-        payload=email_payload,
-        headers={
-            "Authorization": f"Bearer {SENDGRID_API_KEY}",
-            "Content-Type": "application/json",
-        },
-    )
+    sent = try_sendgrid_email(email_payload, SENDGRID_API_KEY, f"draft '{title}'")
 
-    # -----------------------
-    # Mark topic as used (only after successful email send)
-    # -----------------------
-    topics[topic_index]["status"] = "used"
-    topics[topic_index]["used_title"] = title
+    if sent:
+        # -----------------------
+        # Mark topic as used (only after successful email send)
+        # -----------------------
+        topics[topic_index]["status"] = "used"
+        topics[topic_index]["used_title"] = title
 
-    with open(TOPICS_PATH, "w", encoding="utf-8") as f:
-        json.dump(topics, f, indent=2, ensure_ascii=False)
+        with open(TOPICS_PATH, "w", encoding="utf-8") as f:
+            json.dump(topics, f, indent=2, ensure_ascii=False)
 
-    print("Draft email sent successfully via SendGrid.")
+        print("Draft email sent successfully via SendGrid.")
+    else:
+        print("Draft generated, but email was not delivered (non-fatal). Topic remains unused.")
