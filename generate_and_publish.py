@@ -265,6 +265,34 @@ def generate_blog_content(openai_api_key: str, payload: dict) -> str:
         ) from responses_exc
 
 
+def try_sendgrid_email(payload: dict, sendgrid_api_key: str, context: str) -> bool:
+    """
+    Send an email via SendGrid and return True on success.
+
+    Returns False for transient/network/API failures so the caller can decide
+    whether to continue without crashing the whole run.
+    """
+    headers = {
+        "Authorization": f"Bearer {sendgrid_api_key}",
+        "Content-Type": "application/json",
+    }
+
+    try:
+        status, _ = post_json(
+            "https://api.sendgrid.com/v3/mail/send",
+            payload=payload,
+            headers=headers,
+        )
+        if status == 202:
+            return True
+
+        print(f"Warning: unexpected SendGrid status for {context}: HTTP {status}")
+        return False
+    except RuntimeError as exc:
+        print(f"Warning: SendGrid send failed for {context}: {exc}")
+        return False
+
+
 # -----------------------
 # Load authoritative PDF knowledge
 # -----------------------
