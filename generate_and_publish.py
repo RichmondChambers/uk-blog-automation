@@ -202,6 +202,69 @@ def post_json(url: str, payload: dict, headers: dict):
         raise RuntimeError(f"Network error calling {url}: {exc.reason}") from exc
 
 
+def extract_chat_completion_text(response: dict) -> str:
+    try:
+        return response["choices"][0]["message"]["content"].strip()
+    except (KeyError, IndexError, AttributeError) as exc:
+        raise RuntimeError(f"Unexpected chat completions response shape: {response}") from exc
+
+
+def extract_responses_text(response: dict) -> str:
+    # Responses API may place text in output_text, or in output[].content[].text.
+    output_text = response.get("output_text")
+    if isinstance(output_text, str) and output_text.strip():
+        return output_text.strip()
+
+    output_blocks = response.get("output", [])
+    collected = []
+    for block in output_blocks:
+        for part in block.get("content", []):
+            text = part.get("text")
+            if isinstance(text, str) and text.strip():
+                collected.append(text.strip())
+
+    if collected:
+        return "\n".join(collected).strip()
+
+    raise RuntimeError(f"Unexpected responses API response shape: {response}")
+
+
+def generate_blog_content(openai_api_key: str, payload: dict) -> str:
+    headers = {
+        "Authorization": f"Bearer {openai_api_key}",
+        "Content-Type": "application/json",
+    }
+
+    chat_error = None
+    try:
+        _, chat_response = post_json(
+            "https://api.openai.com/v1/chat/completions",
+            payload=payload,
+            headers=headers,
+        )
+        return extract_chat_completion_text(chat_response)
+    except RuntimeError as exc:
+        chat_error = exc
+        print(f"Warning: chat completions request failed, trying responses API fallback. Details: {exc}")
+
+    responses_payload = {
+        "model": payload["model"],
+        "input": payload["messages"],
+    }
+    try:
+        _, responses_response = post_json(
+            "https://api.openai.com/v1/responses",
+            payload=responses_payload,
+            headers=headers,
+        )
+        return extract_responses_text(responses_response)
+    except RuntimeError as responses_exc:
+        raise RuntimeError(
+            "OpenAI generation failed via both chat completions and responses API. "
+            f"chat_completions_error={chat_error}; responses_error={responses_exc}"
+        ) from responses_exc
+
+
 # -----------------------
 # Load authoritative PDF knowledge
 # -----------------------
@@ -361,15 +424,7 @@ For tailored legal advice, contact Richmond Chambers Immigration Barristers by t
 """.strip()
 else:
     OPENAI_API_KEY = require_env("OPENAI_API_KEY")
-    _, chat_response = post_json(
-        "https://api.openai.com/v1/chat/completions",
-        payload=chat_payload,
-        headers={
-            "Authorization": f"Bearer {OPENAI_API_KEY}",
-            "Content-Type": "application/json",
-        },
-    )
-    content = chat_response["choices"][0]["message"]["content"].strip()
+    content = generate_blog_content(OPENAI_API_KEY, chat_payload)
 
 # -----------------------
 # Robust section extractor
