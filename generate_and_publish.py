@@ -347,15 +347,11 @@ if remaining_count == 0:
         ],
     }
 
-    post_json(
-        "https://api.sendgrid.com/v3/mail/send",
-        payload=notification_payload,
-        headers={
-            "Authorization": f"Bearer {SENDGRID_API_KEY}",
-            "Content-Type": "application/json",
-        },
-    )
-    print("Topics exhausted notification sent.")
+    sent = try_sendgrid_email(notification_payload, SENDGRID_API_KEY, "topics exhausted notification")
+    if sent:
+        print("Topics exhausted notification sent.")
+    else:
+        print("Topics exhausted notification not sent (non-fatal).")
     exit(0)
 
 # -----------------------
@@ -491,22 +487,18 @@ BLOG CONTENT:
 if args.dry_run:
     print("Dry run complete: skipped SendGrid email and topics.json update.")
 else:
-    post_json(
-        "https://api.sendgrid.com/v3/mail/send",
-        payload=email_payload,
-        headers={
-            "Authorization": f"Bearer {SENDGRID_API_KEY}",
-            "Content-Type": "application/json",
-        },
-    )
+    sent = try_sendgrid_email(email_payload, SENDGRID_API_KEY, f"draft '{title}'")
 
-    # -----------------------
-    # Mark topic as used (only after successful email send)
-    # -----------------------
-    topics[topic_index]["status"] = "used"
-    topics[topic_index]["used_title"] = title
+    if sent:
+        # -----------------------
+        # Mark topic as used (only after successful email send)
+        # -----------------------
+        topics[topic_index]["status"] = "used"
+        topics[topic_index]["used_title"] = title
 
-    with open(TOPICS_PATH, "w", encoding="utf-8") as f:
-        json.dump(topics, f, indent=2, ensure_ascii=False)
+        with open(TOPICS_PATH, "w", encoding="utf-8") as f:
+            json.dump(topics, f, indent=2, ensure_ascii=False)
 
-    print("Draft email sent successfully via SendGrid.")
+        print("Draft email sent successfully via SendGrid.")
+    else:
+        print("Draft generated, but email was not delivered (non-fatal). Topic remains unused.")
