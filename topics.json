@@ -1,149 +1,357 @@
 [
   {
-    "topic": "UK Spouse Visa: How to Prove a Genuine and Subsisting Relationship (Evidence Checklist)",
-    "angle": "Plain-English guidance on what the Home Office looks for, what documents to gather, and common evidence gaps that trigger refusals.",
-    "status": "used",
-    "used_title": "UK Spouse Visa: Proving a Genuine and Subsisting Relationship (Home Office Evidence and Common Refusal Triggers)"
-  },
-  {
-    "topic": "UK Spouse Visa Financial Requirement: Which Income Sources Count and How to Evidence Them",
-    "angle": "Breaks down acceptable income categories, typical document packs, and practical tips to avoid missing payslips, bank statements, or employer letters.",
-    "status": "used",
-    "used_title": "UK Spouse Visa Financial Requirement: Which Income Sources Count and How to Evidence Them"
-  },
-  {
-    "topic": "Adult Dependent Relative Visa: Avoiding Refusals on ‘Care Available Abroad’",
-    "angle": "Explains the key tests, the kinds of medical/care evidence that matter, and how to structure a persuasive care-needs narrative without exaggeration.",
-    "status": "used",
-    "used_title": "Adult Dependent Relative Visa Refusals: Proving Care Is Not Available Abroad"
-  },
-  {
-    "topic": "Parent of a Child Visa (10-Year Route): Proving a Genuine and Subsisting Parental Relationship",
-    "angle": "Focuses on child contact, responsibility, family court documents (if any), school/GP evidence, and how to present your parenting role clearly.",
-    "status": "used",
-    "used_title": "Parent of a Child Visa (10-Year Route): Proving a Genuine and Subsisting Parental Relationship"
-  },
-  {
-    "topic": "Appendix FM: How to Prove an Intention to Settle Permanently in the UK (Top FAQs + Evidence Ideas)",
-    "angle": "Top-FAQ, plain-English explanation of the Appendix FM requirement to show an intention to settle permanently in the UK with your partner—what decision-makers look for, what you do (and don’t) need to do (e.g., buying a home or marrying), practical evidence examples for different situations (temporary accommodation, future marriage plans, returning abroad to finalise matters), and how to present plans without overpromising if circumstances may change.",
-    "status": "used",
-    "used_title": "Appendix FM: Proving an Intention to Settle Permanently in the UK"
-  },
-  {
-    "topic": "Child Student Visa: Documents Parents Often Forget (Consent, Funding, and Care Arrangements)",
-    "angle": "A step-by-step checklist for parents covering required consents, proof of funds, school letters, and living arrangements in the UK.",
-    "status": "used",
-    "used_title": "Child Student Visa: Documents Parents Often Forget on UK Applications (Consent, Funding and Care)"
-  },
-  {
-    "topic": "Health and Care Worker Visa: Evidence Pitfalls That Cause Delays or Refusals",
-    "angle": "Highlights frequent issues with job details, sponsor documents, and supporting evidence, plus how to spot and fix problems before submission.",
-    "status": "used",
-    "used_title": "Health and Care Worker Visa: Evidence Pitfalls That Cause Delays or Refusals"
-  },
-  {
-    "topic": "Senior or Specialist Worker Visa: What Applicants Should Know About Eligibility and Evidence",
-    "angle": "A clear guide to the key requirements, the documents you’ll be asked for, and how to avoid avoidable compliance-related refusal risks.",
-    "status": "used",
-    "used_title": "Senior or Specialist Worker Visa: Eligibility, Evidence and Avoidable Refusal Risks"
-  },
-  {
-    "topic": "Graduate Visa: Common Reasons Applications Get Refused (and How to Prevent Them)",
-    "angle": "Explains typical errors around eligibility timing, records, and documents, with a practical pre-submission checklist.",
-    "status": "used",
-    "used_title": "Graduate Visa Refusals: Common Reasons Applications Are Refused and How to Avoid Them"
-  },
-  {
-    "topic": "Child of a Parent/Partner Visa: What ‘Sole Responsibility’ Means and How to Prove It",
-    "angle": "A practical walkthrough of the sole responsibility concept, typical supporting documents, and mistakes that commonly undermine applications.",
-    "status": "used",
-    "used_title": "Child of a Parent/Partner Visa: What ‘Sole Responsibility’ Means and How to Prove It"
-  },
-  {
-    "topic": "High Potential Individual Visa: How to Prepare Your Evidence Pack and Avoid Rejections",
-    "angle": "A straightforward guide to the usual documentary requirements and frequent application mistakes that can derail an otherwise eligible case.",
-    "status": "used",
-    "used_title": "High Potential Individual Visa: Preparing Your Evidence Pack and Avoiding Refusals"
-  },
-  {
-    "topic": "UK Expansion Worker Visa: Practical Steps for a Smooth Application (Business and Personal Evidence)",
-    "angle": "Focuses on what the UK entity and applicant must show, how to organise documents, and common gaps that trigger queries.",
-    "status": "used",
-    "used_title": "UK Expansion Worker Visa: Practical Steps for a Smooth Application (Business and Personal Evidence)"
-  },
-  {
-    "topic": "Innovator Founder Visa: Building a Strong Evidence File for Endorsement and the Visa Application",
-    "angle": "Breaks down how to present innovation/viability/scalability evidence, what founders often overlook, and how to reduce avoidable delays.",
-    "status": "used",
-    "used_title": "Innovator Founder Visa: Building a Strong Evidence File for Endorsement and the Visa Application"
-  },
-  {
-    "topic": "Certificates of Sponsorship: What They Are, What Can Go Wrong, and How to Fix Issues Early",
-    "angle": "Applicant-friendly explanation of CoS basics, typical errors (dates, job details, salary), and what to ask your sponsor to correct.",
-    "status": "used",
-    "used_title": "Certificates of Sponsorship (CoS): What They Are, What Can Go Wrong, and How to Fix Issues Early"
-  },
-  {
-    "topic": "Right to Work Checks: A Practical Guide for UK Employers (and What Employees Should Expect)",
-    "angle": "Explains compliant checking methods, how to avoid discrimination, and how workers can provide the right documents confidently.",
-    "status": "used",
-    "used_title": "Right to Work Checks: A Practical Guide for UK Employers (and What Employees Should Expect)"
-  },
-  {
-    "topic": "Civil Penalties for Illegal Working: How Employers Can Reduce Risk and Respond to a Notice",
-    "angle": "A plain-language guide to prevention, record-keeping, and sensible next steps if you receive a civil penalty notice.",
-    "status": "used",
-    "used_title": "Civil Penalties for Illegal Working: How Employers Can Reduce Risk and Respond to a Notice"
-  },
-  {
-    "topic": "Parent of a Child Student Visa: Proving You Meet the Requirements (and Where Applications Go Wrong)",
-    "angle": "Covers eligibility, evidence of your child’s status and schooling, maintenance planning, and the most common refusal reasons.",
-    "status": "used",
-    "used_title": "Parent of a Child Student Visa: Proving You Meet the Requirements (and Where Applications Go Wrong)"
-  },
-  {
-    "topic": "Electronic Travel Authorisation (UK ETA): Who Needs It, When to Apply, and Common Mistakes",
-    "angle": "A practical overview for travellers on eligibility, timing, and how to avoid simple errors that cause disruption at the border.",
+    "topic": "Electronic Travel Authorisation (UK ETA): What Switzerland-Based Travellers Need to Know Before Coming to the UK",
+    "angle": "Explains who needs a UK ETA, how the system affects Swiss citizens and residents of Switzerland, and the practical errors that can disrupt travel plans.",
+    "audience": "general_switzerland",
     "status": "unused"
   },
   {
-    "topic": "EU Settlement Scheme (Pre-Settled Status): How to Protect Your Path to Settled Status",
-    "angle": "Explains what to track, what evidence helps (work, tenancy, bills), and how to avoid problems with continuous residence.",
+    "topic": "EU Settlement Scheme Pre-Settled Status: Protecting Your Route to Settled Status While Living in Switzerland",
+    "angle": "Explains how people with pre-settled status who are now based in Switzerland should think about residence continuity, evidence and future eligibility for settled status.",
+    "audience": "eu_residents_switzerland",
     "status": "unused"
   },
   {
-    "topic": "EU Settlement Scheme Family Permit: Proving the Family Relationship and Dependency",
-    "angle": "A document-led guide on what to submit, how to handle complex family circumstances, and the most common refusal triggers.",
+    "topic": "EU Settlement Scheme Family Permit: Proving Family Connection and Dependency from Switzerland",
+    "angle": "Examines how applicants in Switzerland can present relationship and dependency evidence clearly, especially where family arrangements are financially or geographically complex.",
+    "audience": "eu_residents_switzerland",
     "status": "unused"
   },
   {
-    "topic": "10-Year Long Residence ILR: Calculating Continuous Residence and Avoiding ‘Absences’ Problems",
-    "angle": "Walks through how absences are assessed, what evidence to keep, and how to explain complicated travel histories clearly.",
+    "topic": "10-Year Long Residence ILR: Managing Absence Issues Where Life Is Split Between the UK and Switzerland",
+    "angle": "Looks at how applicants should analyse absences, preserve evidence and explain complicated travel histories where work or family life has taken them between the UK and Switzerland.",
+    "audience": "general_switzerland",
     "status": "unused"
   },
   {
-    "topic": "British Citizenship by Naturalisation: A Practical Evidence Checklist (and Typical Caseworker Concerns)",
-    "angle": "Covers the usual documents, how to present residence and good character information, and common issues that delay decisions.",
+    "topic": "British Citizenship by Naturalisation: Key Residence and Good Character Issues for Applicants Based in Switzerland",
+    "angle": "Considers how Switzerland-based applicants should approach the residence rules, document preparation and caseworker concerns that most often complicate naturalisation applications.",
+    "audience": "general_switzerland",
     "status": "unused"
   },
   {
-    "topic": "Registration as a British Citizen: Which Route Applies and What Evidence You’ll Need",
-    "angle": "Explains common registration pathways in plain English, the core documents, and where families often get stuck.",
+    "topic": "Registration as a British Citizen: Choosing the Right Route in Family Cases Connected to Switzerland",
+    "angle": "Explains how families with links to Switzerland can identify the correct registration route, prepare the core evidence and avoid misunderstanding nationality law rules.",
+    "audience": "general_switzerland",
     "status": "unused"
   },
   {
-    "topic": "Administrative Review After a UK Visa Refusal: When It Helps and How to Write Strong Grounds",
-    "angle": "Shows how to identify caseworking errors, what evidence to reference, and how to keep arguments focused and persuasive.",
+    "topic": "Administrative Review After a UK Visa Refusal: Assessing Whether It Is Worthwhile from Switzerland",
+    "angle": "Explains how applicants based in Switzerland can identify genuine caseworking errors, frame concise grounds and avoid using administrative review where another remedy is more appropriate.",
+    "audience": "general_switzerland",
     "status": "unused"
   },
   {
-    "topic": "First-tier Tribunal Immigration Appeal: What to Expect, What Evidence Wins Cases, and Timelines",
-    "angle": "A step-by-step overview of the appeal journey, witness statements, bundles, hearings, and how to avoid procedural pitfalls.",
+    "topic": "First-tier Tribunal Immigration Appeal: Preparing an Effective Appeal from Outside the UK",
+    "angle": "Considers how appellants in Switzerland should approach witness evidence, bundles, timelines and hearing preparation where the appeal process must be managed cross-border.",
+    "audience": "general_switzerland",
     "status": "unused"
   },
   {
-    "topic": "Immigration Judicial Review: When It’s Appropriate and How to Prepare Without Wasting Time",
-    "angle": "Explains the purpose of judicial review, typical pre-action steps, document preparation, and practical signs you need specialist advice.",
+    "topic": "Immigration Judicial Review: When a Switzerland-Based Applicant Should Consider It",
+    "angle": "Examines when judicial review may be the right response to a UK immigration decision, what pre-action preparation is needed and where applicants can lose time by choosing the wrong remedy.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Skilled Worker Visa: Moving from Switzerland to the UK for a Sponsored Role",
+    "angle": "Explains how Switzerland-based professionals should assess sponsorship, salary, timing and documentary preparation when accepting a UK job offer.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Skilled Worker Visa Salary Rules: How They Affect Switzerland-Based Applicants and UK Employers",
+    "angle": "Examines how salary thresholds, occupation coding and tradeable points should be analysed where recruitment is taking place from Switzerland.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Global Talent Visa: Is It a Realistic Option for Professionals Based in Switzerland?",
+    "angle": "Looks at when the Global Talent route is strategically attractive for academics, digital specialists, artists and researchers living in Switzerland.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Global Talent Visa Endorsement Evidence: Framing an International Career from a Switzerland Base",
+    "angle": "Considers how applicants in Switzerland can present track record, recognition and future plans in a way that fits the endorsement criteria.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "UK Visitor Rules for Business Travellers from Switzerland: Where the Line Is Drawn",
+    "angle": "Explains the difference between permitted business activities and prohibited work for professionals travelling from Switzerland to the UK.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Frequent Travel Between Switzerland and the UK: When Visitor Patterns Start to Create Immigration Risk",
+    "angle": "Analyses how repeated entry, remote working concerns and business activity can trigger scrutiny at the UK border.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "UK Sponsor Licence Applications: What Switzerland-Based Companies Need to Have in Place First",
+    "angle": "Examines the operational, documentary and strategic preparation needed before a Swiss business seeks to sponsor workers in the UK.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Sponsor Licence Compliance: Common Weak Points for Businesses Managing UK Recruitment from Switzerland",
+    "angle": "Looks at record-keeping, reporting, HR systems and oversight issues that can expose internationally active businesses to sponsor compliance risk.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Undefined and Defined Certificates of Sponsorship: Practical Planning for Swiss Businesses Hiring into the UK",
+    "angle": "Explains how certificate allocation works and why workforce planning matters for companies recruiting from Switzerland.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Frontier Worker Permit: Does It Still Matter for People Living in Switzerland and Working in the UK?",
+    "angle": "Considers who may still benefit from frontier worker status and where misunderstanding of the route leads to poor planning.",
+    "audience": "eu_residents_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Returning Resident Visa: Re-Establishing Life in the UK After Time in Switzerland",
+    "angle": "Explains how former UK residents living in Switzerland can assess whether the returning resident route is realistic and how to evidence ongoing ties.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Partner Visa Accommodation Requirement: Explaining UK Housing Plans When You Are Still Based in Switzerland",
+    "angle": "Looks at how couples can present future accommodation arrangements credibly without overstating certainty or committing to unrealistic plans.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Fiance Visa or Spouse Visa: Which Route Makes More Sense for Couples Living in Switzerland?",
+    "angle": "Compares the strategic and practical differences between the two routes for couples planning a move from Switzerland to the UK.",
+    "audience": "swiss_citizens",
+    "status": "unused"
+  },
+  {
+    "topic": "Unmarried Partner Visa: Proving Durable Relationships Where a Couple Has Built a Life in Switzerland",
+    "angle": "Explains how cohabitation, shared commitments and gaps in paperwork are evaluated where the relationship has developed outside the UK.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Appendix FM and Self-Employment: Presenting Income Clearly Where Finances Span the UK and Switzerland",
+    "angle": "Examines the difficulty of evidencing self-employment and complex income streams in partner applications with a cross-border element.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Student Visa: Applying to Study in the UK from Switzerland",
+    "angle": "Looks at how students in Switzerland should plan timing, CAS issues, funding evidence and credibility before making a UK student visa application.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Graduate Route or Skilled Worker Route: What Switzerland-Based Graduates Should Do Next",
+    "angle": "Compares the strategic choices available to recent UK graduates who are now in Switzerland or deciding whether to return.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Child Route Applications: How Families in Switzerland Can Present Best Interests Evidence Properly",
+    "angle": "Explains how child-centred arguments should be evidenced where family life, schooling and caregiving arrangements have an international dimension.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "British Citizenship for Children: Common Questions for Families Based in Switzerland",
+    "angle": "Examines the nationality routes that may be available to children with UK connections and how families should avoid assumptions based on residence alone.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "British Citizenship by Descent: When a Swiss-Based Family Should Look More Closely at the Rules",
+    "angle": "Explains why nationality by descent is often misunderstood and how family history, birth circumstances and parental status affect eligibility.",
+    "audience": "swiss_citizens",
+    "status": "unused"
+  },
+  {
+    "topic": "Naturalisation After Time Abroad: How Residence in Switzerland Can Affect a British Citizenship Application",
+    "angle": "Looks at the impact of absences, timing and future plans where a person with UK immigration status is now living in Switzerland.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Settlement After a Work Visa: What Switzerland-Based Professionals Should Check Before Applying for ILR",
+    "angle": "Explains the main settlement issues that arise where skilled professionals have travelled heavily or spent periods outside the UK.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Absence Calculations for ILR and Citizenship: Why Switzerland-Based Applicants Often Need a More Careful Audit",
+    "angle": "Analyses how travel records, work patterns and partial-day assumptions can affect long residence, settlement and naturalisation planning.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "UK Ancestry Visa: Is It Relevant to Applicants Living in Switzerland?",
+    "angle": "Explains when the ancestry route may be worth exploring for eligible applicants in Switzerland and how to think about documentary preparation.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Youth Mobility and Switzerland-Based Applicants: When a Different UK Route Is Needed",
+    "angle": "Clarifies the limits of the Youth Mobility scheme and when people living in Switzerland should instead consider work, study or family routes.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Scale-up Visa: A Useful Route for High-Growth Hiring Between Switzerland and the UK?",
+    "angle": "Considers when the Scale-up route makes commercial sense for UK employers recruiting talent from Switzerland and where it may not.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Global Business Mobility Routes: Which One Fits a Switzerland-to-UK Transfer?",
+    "angle": "Compares the different business mobility categories for companies moving staff from Switzerland into the UK market.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Secondments to the UK: Immigration Issues Swiss Businesses Should Identify Early",
+    "angle": "Explains why project design, work activities and corporate structure matter when seconding staff from Switzerland to the UK.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Remote Work While Visiting the UK: What Switzerland-Based Professionals Should Not Assume",
+    "angle": "Examines the legal and practical risks of trying to combine business travel to the UK with remote work arrangements.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Entering the UK for Meetings, Training and Site Visits: A Practical Visitor Rule Analysis for Swiss Businesses",
+    "angle": "Looks at how Swiss employers can structure short UK trips without inadvertently crossing into prohibited work.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Sponsor Licence Suspension: How a Swiss-Owned UK Business Should Respond",
+    "angle": "Explains the immediate priorities, evidence gathering and strategic decisions following suspension action by the Home Office.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Sponsor Licence Revocation Risk: Early Warning Signs for Businesses With UK and Switzerland Operations",
+    "angle": "Examines the operational failures that most often place sponsor licences at risk and how internationally managed businesses can address them.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Change of Employment Applications: What Sponsored Workers in Switzerland Need to Check Before Moving Roles",
+    "angle": "Explains how sponsored workers with UK roles and Switzerland-based lives should approach role changes, promotions and internal transfers.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Dependants of Skilled Workers: Planning a Family Move to the UK from Switzerland",
+    "angle": "Looks at the practical and legal issues families should consider when one person is moving under a UK work route and others will follow as dependants.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Switching from Visitor to Another UK Route: Why Applicants Based in Switzerland Need to Plan Properly",
+    "angle": "Explains when a person must leave the UK and apply from abroad, and why assumptions about switching can derail wider immigration planning.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "UK Visa Refusal Letters: How Applicants in Switzerland Should Read Them Strategically",
+    "angle": "Examines how to separate factual findings, credibility points and legal conclusions before deciding what to do next after a refusal.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Fresh Application, Administrative Review or Appeal: Choosing the Right Response to a Refusal from Switzerland",
+    "angle": "Compares the main post-refusal options for applicants outside the UK and explains why the right choice depends on the nature of the decision.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Human Rights Claims in Family Cases: When Switzerland-Based Applicants Need a More Nuanced Strategy",
+    "angle": "Explains when Article 8 arguments may matter in family migration cases and why generic submissions often fail to persuade.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Deception Allegations in UK Visa Cases: What Applicants in Switzerland Should Do First",
+    "angle": "Explains how allegations of false representation or deception affect future immigration options and why early analysis matters.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "English Language Requirements in UK Family and Work Routes: Common Issues for Applicants Based in Switzerland",
+    "angle": "Looks at how applicants should think about approved tests, exemptions and documentary proof where applications are being prepared from Switzerland.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Tuberculosis Testing and Other Overseas Application Logistics: What Matters for Switzerland-Based Applicants",
+    "angle": "Explains the practical application-stage issues that arise outside the UK and which requirements do, and do not, typically apply in Switzerland-linked cases.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Document Consistency in UK Visa Applications: Why Cross-Border Lives Create More Room for Error",
+    "angle": "Examines how applicants with UK and Switzerland connections can avoid inconsistencies across forms, supporting evidence and background facts.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Relationship Breakdown During the Visa Process: Options for Switzerland-Based Applicants",
+    "angle": "Considers what happens when family circumstances change before decision, after entry clearance or during leave in the UK.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Overseas Criminality and Good Character: Issues Switzerland-Based Applicants Should Address Carefully",
+    "angle": "Explains how criminal or compliance history can affect UK visa, settlement and nationality applications, and why understatement is risky.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Business Expansion into the UK: Immigration Planning Issues Swiss Founders Often Leave Too Late",
+    "angle": "Looks at the immigration questions that should be addressed before a Swiss business opens, hires or transfers staff into the UK.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Opening a UK Office from Switzerland: Which Immigration Route Fits the First Senior Hire?",
+    "angle": "Examines how Swiss businesses should think about the first wave of UK personnel planning, including expansion and sponsored work options.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Recruiting Swiss-Based Talent into the UK: What Employers Need to Explain to Candidates Early",
+    "angle": "Explains how UK employers and Swiss businesses can reduce friction by setting out sponsorship, timing and family implications clearly from the outset.",
+    "audience": "swiss_businesses",
+    "status": "unused"
+  },
+  {
+    "topic": "Moving a Founder from Switzerland to the UK: Immigration Routes Compared",
+    "angle": "Compares the main UK visa options available to founders in Switzerland depending on business model, endorsement prospects and UK expansion plans.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "Family Life Split Between Switzerland and the UK: Choosing the Right Immigration Route",
+    "angle": "Explains how couples and families should assess whether the right UK route is a partner, child, parent or work-related application when life is already cross-border.",
+    "audience": "general_switzerland",
+    "status": "unused"
+  },
+  {
+    "topic": "When UK Immigration Advice Is Needed Before Travel: Common Switzerland-to-UK Scenarios",
+    "angle": "Identifies the situations in which travellers, workers and businesses in Switzerland should take advice before making assumptions about UK entry or work rights.",
+    "audience": "general_switzerland",
     "status": "unused"
   }
 ]
+
