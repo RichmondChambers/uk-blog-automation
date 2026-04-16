@@ -375,6 +375,40 @@ def load_pdf_knowledge(folder="knowledge", max_chars=12000):
 
 
 def build_audience_brief(topic_entry: dict) -> str:
+    audience = (topic_entry.get("audience") or "").strip().lower()
+
+    audience_map = {
+        "general_switzerland": (
+            "Audience emphasis: Write for readers based in Switzerland, including Swiss citizens, "
+            "EU nationals residing in Switzerland, non-EU nationals residing in Switzerland and "
+            "businesses in Switzerland. Explain why the topic matters in a Switzerland-to-UK context."
+        ),
+        "swiss_citizens": (
+            "Audience emphasis: Write primarily for Swiss citizens considering travel, work, study, "
+            "family migration, settlement or citizenship options in the UK. Where relevant, address "
+            "common misunderstandings arising from Swiss nationality, post-Brexit rules and the limits "
+            "of visa-free travel."
+        ),
+        "eu_residents_switzerland": (
+            "Audience emphasis: Write primarily for EU nationals residing in Switzerland who need to "
+            "understand their UK immigration options. Do not imply that EU nationality or residence in "
+            "Switzerland creates UK immigration rights unless that is legally correct."
+        ),
+        "non_eu_residents_switzerland": (
+            "Audience emphasis: Write primarily for non-EU nationals residing in Switzerland who are "
+            "considering UK immigration routes from Switzerland. Address practical cross-border application, "
+            "eligibility and evidential issues."
+        ),
+        "swiss_businesses": (
+            "Audience emphasis: Write primarily for businesses in Switzerland, including Swiss employers, "
+            "HR teams, mobility teams, founders and multinationals considering UK hiring, UK expansion, "
+            "business travel, sponsor licence duties or compliance risk."
+        ),
+    }
+
+    if audience in audience_map:
+        return audience_map[audience]
+
     topic_text = f"{topic_entry.get('topic', '')} {topic_entry.get('angle', '')}".lower()
 
     if any(
@@ -389,12 +423,7 @@ def build_audience_brief(topic_entry: dict) -> str:
             "right to work",
         ]
     ):
-        return (
-            "Audience emphasis: Write primarily for businesses in Switzerland, including Swiss employers, "
-            "HR teams, mobility teams, founders and multinationals considering UK hiring, UK expansion, "
-            "sponsor licence duties or compliance risk. Include practical implications for organisations "
-            "managing staff movements from Switzerland to the UK."
-        )
+        return audience_map["swiss_businesses"]
 
     if any(
         term in topic_text
@@ -405,12 +434,7 @@ def build_audience_brief(topic_entry: dict) -> str:
             "business travel",
         ]
     ):
-        return (
-            "Audience emphasis: Write primarily for Swiss citizens, EU nationals and non-EU nationals residing "
-            "in Switzerland who need to understand when travel from Switzerland to the UK is permitted as a visitor "
-            "and when a work route may be required. Address business travel scenarios relevant to Switzerland-based "
-            "professionals and companies."
-        )
+        return audience_map["general_switzerland"]
 
     if any(
         term in topic_text
@@ -423,11 +447,7 @@ def build_audience_brief(topic_entry: dict) -> str:
             "adult dependent",
         ]
     ):
-        return (
-            "Audience emphasis: Write primarily for Swiss citizens and residents of Switzerland with British or "
-            "UK-based family links. Address practical issues for couples and families planning a move from "
-            "Switzerland to the UK."
-        )
+        return audience_map["general_switzerland"]
 
     if any(
         term in topic_text
@@ -436,10 +456,7 @@ def build_audience_brief(topic_entry: dict) -> str:
             "graduate",
         ]
     ):
-        return (
-            "Audience emphasis: Write primarily for students and families in Switzerland considering study in the UK, "
-            "including Swiss citizens, EU nationals resident in Switzerland and non-EU nationals resident in Switzerland."
-        )
+        return audience_map["general_switzerland"]
 
     if any(
         term in topic_text
@@ -453,10 +470,7 @@ def build_audience_brief(topic_entry: dict) -> str:
             "skilled worker",
         ]
     ):
-        return (
-            "Audience emphasis: Write primarily for internationally mobile professionals, founders, senior employees "
-            "and businesses in Switzerland considering UK expansion, investment, innovation or skilled migration routes."
-        )
+        return audience_map["general_switzerland"]
 
     if any(
         term in topic_text
@@ -468,16 +482,9 @@ def build_audience_brief(topic_entry: dict) -> str:
             "naturalization",
         ]
     ):
-        return (
-            "Audience emphasis: Write primarily for readers in Switzerland assessing long-term relocation to the UK "
-            "or the consequences of prior UK residence for settlement or British citizenship."
-        )
+        return audience_map["general_switzerland"]
 
-    return (
-        "Audience emphasis: Write for readers based in Switzerland, including Swiss citizens, EU nationals residing "
-        "in Switzerland, non-EU nationals residing in Switzerland and businesses in Switzerland. Explain why the "
-        "topic matters in a Switzerland-to-UK context."
-    )
+    return audience_map["general_switzerland"]
 
 
 PDF_KNOWLEDGE = load_pdf_knowledge()
@@ -552,6 +559,7 @@ if topic_entry is None:
     raise RuntimeError("No unused topic found, but remaining_count was non-zero. Check topics.json integrity.")
 
 audience_brief = build_audience_brief(topic_entry)
+audience_label = topic_entry.get("audience", "general_switzerland")
 
 # -----------------------
 # Generate blog post
@@ -604,13 +612,10 @@ Where relevant:
             "content": f"""
 Topic: {topic_entry['topic']}
 Angle: {topic_entry['angle']}
+Audience: {audience_label}
 
 Please write this blog post for a Switzerland-based audience.
-The legal analysis must remain focused on UK immigration law, but the framing, examples and practical implications should be relevant to:
-- Swiss citizens
-- EU nationals residing in Switzerland
-- non-EU nationals residing in Switzerland
-- businesses operating from Switzerland
+The legal analysis must remain focused on UK immigration law, but the framing, examples and practical implications should be relevant to the stated audience above.
 
 Do not write as though the audience is a generic international readership or primarily UK-based.
 Where relevant, distinguish nationality from residence and explain when residence in Switzerland is legally irrelevant to UK eligibility.
@@ -643,8 +648,9 @@ UK immigration lawyer Switzerland; UK visa advice Switzerland; UK immigration ru
 BLOG CONTENT:
 This is a dry run for topic: {topic_entry['topic']}.
 Angle: {topic_entry['angle']}
+Audience: {audience_label}
 
-This draft is intentionally shortened for dry-run verification only. In live mode, the article will be framed for a Switzerland-based audience, including Swiss citizens, EU nationals residing in Switzerland, non-EU nationals residing in Switzerland and businesses in Switzerland.
+This draft is intentionally shortened for dry-run verification only. In live mode, the article will be framed for the specified Switzerland-based audience.
 
 {CTA_HEADING}
 For tailored legal advice, contact {CTA_NAME} by telephone on {CTA_PHONE} or by completing an enquiry form to arrange an initial consultation meeting.
@@ -677,6 +683,7 @@ suggested_seo_keywords = extract("SUGGESTED SEO KEYWORDS:")
 body = extract("BLOG CONTENT:", until_next=False)
 
 print("TITLE:", title)
+print("AUDIENCE:", audience_label)
 print("DYNAMIC PAGE LINK:", dynamic_page_link)
 print("SEO META TITLE:", meta_title)
 print("SEO META DESCRIPTION:", meta_description)
@@ -690,7 +697,7 @@ SENDGRID_API_KEY = require_env("SENDGRID_API_KEY") if not args.dry_run else None
 
 email_payload = {
     "personalizations": [
-        {"to": [{"email": EMAIL_TO}], "subject": f"Blog draft: {title}"}
+        {"to": [{"email": EMAIL_TO}], "subject": f"Blog draft [{audience_label}]: {title}"}
     ],
     "from": {"email": EMAIL_FROM},
     "reply_to": {"email": REPLY_TO},
@@ -701,7 +708,7 @@ email_payload = {
 {remaining_count - 1} topics remaining
 
 AUDIENCE FOCUS:
-Switzerland-based readers
+{audience_label}
 
 BLOG TITLE:
 {title}
