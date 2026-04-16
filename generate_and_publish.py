@@ -26,26 +26,70 @@ def require_env(name: str) -> str:
 
 
 # -----------------------
-# Email configuration (SendGrid sender identity)
+# Email configuration
 # -----------------------
-# Verified SendGrid sender identity (Single Sender) is: info@richmondchambers.com
 EMAIL_FROM = os.environ.get("SENDGRID_FROM_EMAIL", "info@richmondchambers.com")
-# Always send to Paul only
 EMAIL_TO = "paul.richmond@richmondchambers.com"
-# Optional: direct replies somewhere specific (kept as Paul by default)
 REPLY_TO = os.environ.get("SENDGRID_REPLY_TO", EMAIL_TO)
+
+# CTA identity for blog posts
+CTA_HEADING = "Contact Our UK Immigration Lawyers in Switzerland"
+CTA_NAME = "Richmond Chambers Switzerland"
+CTA_PHONE = "+41 21 588 07 70"
 
 
 # -----------------------
 # GPT system prompt
 # -----------------------
 
-SYSTEM_PROMPT = """
-You are a senior legal blog writer producing authoritative, legally accurate blog posts for Richmond Chambers Immigration Barristers, an immigration law firm specialising exclusively in UK immigration law and UK immigration routes.
+SYSTEM_PROMPT = f"""
+You are a senior legal blog writer producing authoritative, legally accurate blog posts for Richmond Chambers, an immigration law practice specialising exclusively in UK immigration law and UK immigration routes.
 
-Your role is to write in-depth, analytical blog posts aimed at educated, time-poor professionals seeking clear, reliable guidance on UK immigration options. Readers may be based in the UK or overseas and are looking for practical understanding grounded in law and regulatory practice, not marketing content.
+Primary audience:
+
+The primary audience is based in Switzerland. Readers include:
+- Swiss citizens considering travel, relocation, work, study, family migration or settlement options in the UK
+- EU and non-EU nationals lawfully residing in Switzerland who need to understand their UK immigration options
+- Businesses in Switzerland, including Swiss employers, founders, scale-ups, multinationals and mobility teams dealing with UK expansion, recruitment, business travel or sponsor licence issues
+- Professional advisers and internationally mobile individuals in Switzerland who need clear analysis of UK immigration law from a Switzerland-facing perspective
+
+Your role is to write in-depth, analytical blog posts aimed at educated, time-poor professionals seeking clear, reliable guidance on UK immigration options. The legal analysis must always be based on UK immigration law. However, the article should be framed for readers in Switzerland unless the topic clearly requires a different emphasis.
 
 You must demonstrate strong subject-matter expertise in UK immigration law, including UK Partner & Family visas, EU Settlement Scheme, UK Standard Visitor Visa, UK Short-term Work Visas, UK Long-term work visas, UK Business visas, UK Global Business Mobility Visas, UK Global Talent visas, Settlement / Indefinite Leave to remain in the UK, British citizenship, UK Sponsor licensing, UK Sponsor compliance, UK Sponsor management, UK Civil Penalties, Human Rights, UK Student Visas, UK BNO Visas and related regulatory frameworks. All content must be legally accurate. You must not speculate, invent rules, or hallucinate legal positions. Where necessary, you may supplement your knowledge with careful web research to ensure accuracy and currency.
+
+Audience framing requirements:
+
+Write for readers in Switzerland, not for a generic global audience.
+Where relevant, address the different positions of:
+- Swiss citizens
+- EU nationals residing in Switzerland
+- non-EU nationals residing in Switzerland
+- employers and businesses operating from Switzerland
+
+Do not assume the reader is already in the UK.
+Do not assume that residence in Switzerland gives any immigration advantage in UK law unless that is legally correct.
+Where relevant, explain the practical implications for someone applying from Switzerland, travelling from Switzerland, or organising UK recruitment or mobility from Switzerland.
+Where relevant, correct common misunderstandings that Switzerland-based readers may have, including confusion between Swiss nationality, EU nationality, residence in Switzerland and UK immigration eligibility.
+
+Avoid the following:
+- opening with generic statements about "moving to the UK" or "navigating immigration rules"
+- writing as though the reader is based anywhere in the world
+- treating Swiss citizens, EU nationals and non-EU nationals as though they are in the same legal position
+- assuming that residence in Switzerland itself creates UK immigration rights
+- generic conclusions that merely restate that legal advice may be needed
+
+Prefer:
+- concrete Switzerland-facing examples
+- cross-border business and relocation scenarios relevant to Switzerland
+- careful distinctions between nationality, residence and immigration status
+- practical explanation of how UK rules affect readers planning from Switzerland
+
+Before drafting, silently determine:
+1. which Switzerland-based audience segment is most likely to read this post;
+2. what legal misconceptions that audience is likely to have;
+3. what cross-border Switzerland-to-UK scenarios are most relevant.
+
+Do not output that planning note. Use it to improve the specificity of the article.
 
 Writing style and tone:
 
@@ -95,6 +139,10 @@ Optimise content for search engines using relevant keywords and keyword variatio
 
 Keywords must be integrated naturally into prose, without keyword stuffing or forced repetition
 
+Also generate:
+- a DYNAMIC PAGE LINK heading with a blank line beneath it for a link to be pasted later
+- a SUGGESTED SEO KEYWORDS heading containing exactly 6 relevant SEO keyword phrases likely to perform well for the topic and audience
+
 Structure:
 
 A compelling, specific and concise title that clearly reflects the legal subject matter
@@ -110,59 +158,47 @@ A practical conclusion that distils key legal takeaways and implications for rea
 Mandatory final section:
 
 A final section with the exact sub-heading:
-Contact Our Immigration Barristers
+{CTA_HEADING}
 
 Call to action requirement:
 
-Under the sub-heading “Contact Our Immigration Barristers”, include a short, measured call to action written in restrained, professional prose.
+Under the sub-heading “{CTA_HEADING}”, include a short, measured call to action written in restrained, professional prose.
 
 The call to action must:
-
 Be relevant to the subject matter of the blog post
-
 Be framed as an invitation to obtain tailored legal advice
-
-Invite readers to contact Richmond Chambers Immigration Barristers by telephone on +44 (0)203 617 9173 or by completing an enquiry form to arrange an initial consultation meeting
-
+Invite readers to contact {CTA_NAME} by telephone on {CTA_PHONE} or by completing an enquiry form to arrange an initial consultation meeting
 Remain factual, neutral, and non-promotional
 
 Output format:
 
 Plain text only
-
 Headings clearly marked
-
 No markdown
-
 No citations or footnotes unless explicitly requested
-
 No meta-commentary about the writing process
 
 SEO requirements:
-
 Generate an SEO meta title (maximum 60 characters)
-
 Generate an SEO meta description (maximum 155 characters)
-
 Meta text must be natural, accurate, and non-promotional
-
-Your objective is to produce content that reads as a serious piece of legal analysis written for professionals, where clarity is achieved through careful prose and reasoning rather than through extensive use of lists.
-
-SEO requirements:
-- Generate an SEO meta title (max 60 characters)
-- Generate an SEO meta description (max 155 characters)
-- Meta text must be natural, accurate, and non-promotional
 
 Output format EXACTLY as follows:
 
 BLOG TITLE:
 <text>
 
+DYNAMIC PAGE LINK:
+<leave blank beneath this heading>
+
 SEO META TITLE:
 <text>
 
 SEO META DESCRIPTION:
 <text>
+
+SUGGESTED SEO KEYWORDS:
+<keyword 1>; <keyword 2>; <keyword 3>; <keyword 4>; <keyword 5>; <keyword 6>
 
 BLOG CONTENT:
 <full article>
@@ -184,7 +220,7 @@ def post_json(url: str, payload: dict, headers: dict):
 
     try:
         with request.urlopen(req) as response:
-            raw = response.read()  # bytes
+            raw = response.read()
             body = raw.decode("utf-8", errors="replace").strip()
 
             if not body:
@@ -210,7 +246,6 @@ def extract_chat_completion_text(response: dict) -> str:
 
 
 def extract_responses_text(response: dict) -> str:
-    # Responses API may place text in output_text, or in output[].content[].text.
     output_text = response.get("output_text")
     if isinstance(output_text, str) and output_text.strip():
         return output_text.strip()
@@ -305,6 +340,7 @@ def load_pdf_knowledge(folder="knowledge", max_chars=12000):
         return ""
 
     if not os.path.isdir(folder):
+        print(f"Warning: knowledge folder not found: {folder}")
         return ""
 
     for filename in sorted(os.listdir(folder)):
@@ -312,11 +348,19 @@ def load_pdf_knowledge(folder="knowledge", max_chars=12000):
             continue
 
         path = os.path.join(folder, filename)
-        reader = PdfReader(path)
+
+        try:
+            reader = PdfReader(path)
+        except Exception as exc:
+            print(f"Warning: could not read PDF '{filename}': {exc}")
+            continue
 
         pdf_text = []
         for page in reader.pages:
-            text = page.extract_text()
+            try:
+                text = page.extract_text()
+            except Exception:
+                text = None
             if text:
                 pdf_text.append(text)
 
@@ -328,6 +372,112 @@ def load_pdf_knowledge(folder="knowledge", max_chars=12000):
 
     full_text = "\n\n".join(texts)
     return full_text[:max_chars]
+
+
+def build_audience_brief(topic_entry: dict) -> str:
+    topic_text = f"{topic_entry.get('topic', '')} {topic_entry.get('angle', '')}".lower()
+
+    if any(
+        term in topic_text
+        for term in [
+            "sponsor",
+            "sponsorship",
+            "licence",
+            "license",
+            "compliance",
+            "civil penalty",
+            "right to work",
+        ]
+    ):
+        return (
+            "Audience emphasis: Write primarily for businesses in Switzerland, including Swiss employers, "
+            "HR teams, mobility teams, founders and multinationals considering UK hiring, UK expansion, "
+            "sponsor licence duties or compliance risk. Include practical implications for organisations "
+            "managing staff movements from Switzerland to the UK."
+        )
+
+    if any(
+        term in topic_text
+        for term in [
+            "visitor",
+            "business visitor",
+            "standard visitor",
+            "business travel",
+        ]
+    ):
+        return (
+            "Audience emphasis: Write primarily for Swiss citizens, EU nationals and non-EU nationals residing "
+            "in Switzerland who need to understand when travel from Switzerland to the UK is permitted as a visitor "
+            "and when a work route may be required. Address business travel scenarios relevant to Switzerland-based "
+            "professionals and companies."
+        )
+
+    if any(
+        term in topic_text
+        for term in [
+            "partner",
+            "spouse",
+            "family",
+            "appendix fm",
+            "child",
+            "adult dependent",
+        ]
+    ):
+        return (
+            "Audience emphasis: Write primarily for Swiss citizens and residents of Switzerland with British or "
+            "UK-based family links. Address practical issues for couples and families planning a move from "
+            "Switzerland to the UK."
+        )
+
+    if any(
+        term in topic_text
+        for term in [
+            "student",
+            "graduate",
+        ]
+    ):
+        return (
+            "Audience emphasis: Write primarily for students and families in Switzerland considering study in the UK, "
+            "including Swiss citizens, EU nationals resident in Switzerland and non-EU nationals resident in Switzerland."
+        )
+
+    if any(
+        term in topic_text
+        for term in [
+            "global talent",
+            "innovator",
+            "founder",
+            "expansion worker",
+            "senior specialist",
+            "scale-up",
+            "skilled worker",
+        ]
+    ):
+        return (
+            "Audience emphasis: Write primarily for internationally mobile professionals, founders, senior employees "
+            "and businesses in Switzerland considering UK expansion, investment, innovation or skilled migration routes."
+        )
+
+    if any(
+        term in topic_text
+        for term in [
+            "settlement",
+            "ilr",
+            "citizenship",
+            "naturalisation",
+            "naturalization",
+        ]
+    ):
+        return (
+            "Audience emphasis: Write primarily for readers in Switzerland assessing long-term relocation to the UK "
+            "or the consequences of prior UK residence for settlement or British citizenship."
+        )
+
+    return (
+        "Audience emphasis: Write for readers based in Switzerland, including Swiss citizens, EU nationals residing "
+        "in Switzerland, non-EU nationals residing in Switzerland and businesses in Switzerland. Explain why the "
+        "topic matters in a Switzerland-to-UK context."
+    )
 
 
 PDF_KNOWLEDGE = load_pdf_knowledge()
@@ -352,7 +502,7 @@ remaining_count = len(unused_topics)
 if remaining_count == 0:
     if args.dry_run:
         print("Dry run complete: topics exhausted path reached; skipped SendGrid notification.")
-        exit(0)
+        raise SystemExit(0)
 
     SENDGRID_API_KEY = require_env("SENDGRID_API_KEY")
 
@@ -375,12 +525,16 @@ if remaining_count == 0:
         ],
     }
 
-    sent = try_sendgrid_email(notification_payload, SENDGRID_API_KEY, "topics exhausted notification")
+    sent = try_sendgrid_email(
+        notification_payload,
+        SENDGRID_API_KEY,
+        "topics exhausted notification",
+    )
     if sent:
         print("Topics exhausted notification sent.")
     else:
         print("Topics exhausted notification not sent (non-fatal).")
-    exit(0)
+    raise SystemExit(0)
 
 # -----------------------
 # Select next unused topic
@@ -396,6 +550,8 @@ for index, topic in enumerate(topics):
 
 if topic_entry is None:
     raise RuntimeError("No unused topic found, but remaining_count was non-zero. Check topics.json integrity.")
+
+audience_brief = build_audience_brief(topic_entry)
 
 # -----------------------
 # Generate blog post
@@ -420,11 +576,50 @@ If the documents are silent on a point, you may rely on general knowledge but sh
 
 AUTHORITATIVE MATERIAL:
 {PDF_KNOWLEDGE}
-""",
+""".strip(),
+        },
+        {
+            "role": "system",
+            "content": f"""
+Audience-specific editorial instruction:
+
+{audience_brief}
+
+Frame the article for readers based in Switzerland.
+The legal content must remain focused on UK immigration law.
+Where relevant:
+- distinguish Swiss citizens from EU nationals residing in Switzerland and non-EU nationals residing in Switzerland
+- address practical issues arising when planning from Switzerland
+- avoid generic international framing
+- avoid assuming the reader is already in the UK
+- explain when Swiss residence is legally irrelevant to UK eligibility
+- ensure the final call to action refers to {CTA_NAME} and the telephone number {CTA_PHONE}
+- ensure the final section heading is exactly: {CTA_HEADING}
+- include a DYNAMIC PAGE LINK heading with a blank line beneath it
+- include SUGGESTED SEO KEYWORDS with exactly 6 keyword phrases
+""".strip(),
         },
         {
             "role": "user",
-            "content": f"Topic: {topic_entry['topic']}\nAngle: {topic_entry['angle']}",
+            "content": f"""
+Topic: {topic_entry['topic']}
+Angle: {topic_entry['angle']}
+
+Please write this blog post for a Switzerland-based audience.
+The legal analysis must remain focused on UK immigration law, but the framing, examples and practical implications should be relevant to:
+- Swiss citizens
+- EU nationals residing in Switzerland
+- non-EU nationals residing in Switzerland
+- businesses operating from Switzerland
+
+Do not write as though the audience is a generic international readership or primarily UK-based.
+Where relevant, distinguish nationality from residence and explain when residence in Switzerland is legally irrelevant to UK eligibility.
+Ensure that the final call to action refers to {CTA_NAME} and the telephone number {CTA_PHONE}.
+Ensure that the final section heading is exactly: {CTA_HEADING}.
+Also provide:
+- DYNAMIC PAGE LINK with a blank line beneath it
+- SUGGESTED SEO KEYWORDS containing exactly 6 relevant keyword phrases separated by semicolons
+""".strip(),
         },
     ],
 }
@@ -433,18 +628,26 @@ if args.dry_run:
     content = f"""BLOG TITLE:
 Dry Run: {topic_entry['topic']}
 
+DYNAMIC PAGE LINK:
+
+
 SEO META TITLE:
 Dry run meta title
 
 SEO META DESCRIPTION:
 Dry run description for verification only.
 
+SUGGESTED SEO KEYWORDS:
+UK immigration lawyer Switzerland; UK visa advice Switzerland; UK immigration rules for Swiss residents; UK immigration options from Switzerland; UK visa application Switzerland; UK immigration legal advice Switzerland
+
 BLOG CONTENT:
 This is a dry run for topic: {topic_entry['topic']}.
 Angle: {topic_entry['angle']}
 
-Contact Our Immigration Barristers
-For tailored legal advice, contact Richmond Chambers Immigration Barristers by telephone on +44 (0)203 617 9173 or by completing an enquiry form to arrange an initial consultation meeting.
+This draft is intentionally shortened for dry-run verification only. In live mode, the article will be framed for a Switzerland-based audience, including Swiss citizens, EU nationals residing in Switzerland, non-EU nationals residing in Switzerland and businesses in Switzerland.
+
+{CTA_HEADING}
+For tailored legal advice, contact {CTA_NAME} by telephone on {CTA_PHONE} or by completing an enquiry form to arrange an initial consultation meeting.
 """.strip()
 else:
     OPENAI_API_KEY = require_env("OPENAI_API_KEY")
@@ -463,17 +666,21 @@ def extract(section, until_next=True):
     if until_next:
         end = content.find("\n\n", start)
         return content[start:end].strip() if end != -1 else content[start:].strip()
-    else:
-        return content[start:].strip()
+    return content[start:].strip()
+
 
 title = extract("BLOG TITLE:")
+dynamic_page_link = extract("DYNAMIC PAGE LINK:")
 meta_title = extract("SEO META TITLE:")[:60]
 meta_description = extract("SEO META DESCRIPTION:")[:155]
+suggested_seo_keywords = extract("SUGGESTED SEO KEYWORDS:")
 body = extract("BLOG CONTENT:", until_next=False)
 
 print("TITLE:", title)
+print("DYNAMIC PAGE LINK:", dynamic_page_link)
 print("SEO META TITLE:", meta_title)
 print("SEO META DESCRIPTION:", meta_description)
+print("SUGGESTED SEO KEYWORDS:", suggested_seo_keywords)
 
 # -----------------------
 # Send draft email via SendGrid
@@ -493,14 +700,23 @@ email_payload = {
             "value": f"""TOPIC BACKLOG:
 {remaining_count - 1} topics remaining
 
+AUDIENCE FOCUS:
+Switzerland-based readers
+
 BLOG TITLE:
 {title}
+
+DYNAMIC PAGE LINK:
+{dynamic_page_link}
 
 SEO META TITLE:
 {meta_title}
 
 SEO META DESCRIPTION:
 {meta_description}
+
+SUGGESTED SEO KEYWORDS:
+{suggested_seo_keywords}
 
 ---------------------------------
 
@@ -518,9 +734,6 @@ else:
     sent = try_sendgrid_email(email_payload, SENDGRID_API_KEY, f"draft '{title}'")
 
     if sent:
-        # -----------------------
-        # Mark topic as used (only after successful email send)
-        # -----------------------
         topics[topic_index]["status"] = "used"
         topics[topic_index]["used_title"] = title
 
