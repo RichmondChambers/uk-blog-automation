@@ -3,7 +3,8 @@
     "topic": "Electronic Travel Authorisation (UK ETA): What Switzerland-Based Travellers Need to Know Before Coming to the UK",
     "angle": "Explains who needs a UK ETA, how the system affects Swiss citizens and residents of Switzerland, and the practical errors that can disrupt travel plans.",
     "audience": "general_switzerland",
-    "status": "unused"
+    "status": "used",
+    "used_title": "UK Electronic Travel Authorisation (ETA): What Switzerland-Based Travellers Need to Know Before Coming to the UK"
   },
   {
     "topic": "EU Settlement Scheme Pre-Settled Status: Protecting Your Route to Settled Status While Living in Switzerland",
@@ -354,4 +355,3 @@
     "status": "unused"
   }
 ]
-
