@@ -29,7 +29,7 @@ def require_env(name: str) -> str:
 # Email configuration
 # -----------------------
 EMAIL_FROM = os.environ.get("SENDGRID_FROM_EMAIL", "info@richmondchambers.com")
-EMAIL_TO = "paul.richmond@richmondchambers.com"
+EMAIL_TO = "paul.richmond@richmondchambers.ch"
 REPLY_TO = os.environ.get("SENDGRID_REPLY_TO", EMAIL_TO)
 
 # CTA identity for blog posts
